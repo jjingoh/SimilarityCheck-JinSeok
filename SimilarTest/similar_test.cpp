@@ -9,7 +9,34 @@ class SimilarityCheckerFixture : public testing::Test
 {
 public:
 	SimilarityChecker checker;
+	void assertIllegalArgument(string str1, string str2)
+	{
+		try
+		{
+			checker.checkSimilarity(str1, str2);
+			FAIL();
+		}
+		catch (exception e)
+		{
+			
+		}
+	}
 };
+
+TEST_F(SimilarityCheckerFixture, ThrowExceptionWhenInvalidCases) {
+	vector < tuple<string, string> > cases = {
+		{"ASD1", "DSA"},
+		{"A", "BB1"},
+		{"AAABBa", "BAA"},
+		{"AA", "AAEb"},
+	};
+	for (auto& item : cases)
+	{
+		string str1, str2;
+		std::tie(str1, str2) = item;
+		assertIllegalArgument(str1, str2);
+	}
+}
 
 TEST_F(SimilarityCheckerFixture, LengthCheck) {
 	vector < tuple<string, string, int> > cases = {
