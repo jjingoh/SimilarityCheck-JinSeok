@@ -14,17 +14,16 @@ public:
 		return (1 - gap / (double)small_length) * 60;
 	}
 
-	int getTotalAlphabetCnt(const string& str1, const string& str2)
+	void checkAlphabetExist(const string& str1, bool* alphabetExist)
 	{
-		bool alphabetExist[26] = { false };
 		for (auto ch : str1)
 		{
 			alphabetExist[ch - 'A'] = true;
 		}
-		for (auto ch : str2)
-		{
-			alphabetExist[ch - 'A'] = true;
-		}
+	}
+
+	int countAlphabetExist(bool* alphabetExist)
+	{
 		int cnt = 0;
 		for (int i = 0; i < 26; ++i)
 		{
@@ -34,22 +33,37 @@ public:
 		return cnt;
 	}
 
-	int getSameAlphabetCnt(const string& str1, const string& str2)
+	int getTotalAlphabetCnt(const string& str1, const string& str2)
 	{
 		bool alphabetExist[26] = { false };
-		for (auto ch : str1)
-		{
-			alphabetExist[ch - 'A'] = true;
-		}
+		checkAlphabetExist(str1, alphabetExist);
+		checkAlphabetExist(str2, alphabetExist);
+		return countAlphabetExist(alphabetExist);
+	}
 
+	void invalidateExist(bool *alphabetExist, char ch)
+	{
+		alphabetExist[ch - 'A'] = false;
+	}
+
+	int countDifferentAlphabet(const string& str, bool* alphabetExist)
+	{
 		int cnt = 0;
-		for (auto ch: str2)
+		for (auto ch: str)
 		{
 			if (alphabetExist[ch - 'A'] == false) continue;
 			cnt++;
-			alphabetExist[ch - 'A'] = false;
+			invalidateExist(alphabetExist, ch);
 		}
 		return cnt;
+	}
+
+	int getSameAlphabetCnt(const string& str1, const string& str2)
+	{
+		bool alphabetExist[26] = { false };
+		checkAlphabetExist(str1, alphabetExist);
+
+		return countDifferentAlphabet(str2, alphabetExist);
 	}
 
 	int checkAlphabet(const string& str1, const string& str2)
