@@ -38,14 +38,42 @@ TEST_F(SimilarityCheckerFixture, ThrowExceptionWhenInvalidCases) {
 	}
 }
 
-TEST_F(SimilarityCheckerFixture, LengthCheck) {
+TEST_F(SimilarityCheckerFixture, SameLengthCheck) {
 	vector < tuple<string, string, int> > cases = {
-		{"ASD", "DSA", 60},
+		{"ASD", "DSA", 60}
+	};
+	for (auto& item : cases)
+	{
+		string str1, str2;
+		int expected;
+		std::tie(str1, str2, expected) = item;
+		int score = checker.checkLength(str1, str2);
+		EXPECT_EQ(expected, score);
+	}
+}
+
+
+TEST_F(SimilarityCheckerFixture, DiffLengthCheck) {
+	vector < tuple<string, string, int> > cases = {
 		{"A", "BB", 0},
 		{"AAABB", "BAA", 20},
 		{"AA", "AAE", 30},
 	};
 	for (auto& item: cases)
+	{
+		string str1, str2;
+		int expected;
+		std::tie(str1, str2, expected) = item;
+		int score = checker.checkLength(str1, str2);
+		EXPECT_EQ(expected, score);
+	}
+}
+
+TEST_F(SimilarityCheckerFixture, DoubleDiffLengthCheck) {
+	vector < tuple<string, string, int> > cases = {
+		{"AAAAA", "BB", 0}
+	};
+	for (auto& item : cases)
 	{
 		string str1, str2;
 		int expected;
