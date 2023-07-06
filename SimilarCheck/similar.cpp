@@ -1,6 +1,6 @@
 #include <string>
 #include <stdexcept>
-
+#include <iostream>
 using namespace std;
 
 class SimilarityChecker
@@ -14,13 +14,55 @@ public:
 		return (1 - gap / (double)small_length) * 60;
 	}
 
+	int getTotalAlphabetCnt(const string& str1, const string& str2)
+	{
+		bool alphabetExist[26] = { false };
+		for (auto ch : str1)
+		{
+			alphabetExist[ch - 'A'] = true;
+		}
+		for (auto ch : str2)
+		{
+			alphabetExist[ch - 'A'] = true;
+		}
+		int cnt = 0;
+		for (int i = 0; i < 26; ++i)
+		{
+			if (alphabetExist[i] == false) continue;
+			cnt++;
+		}
+		return cnt;
+	}
+
+	int getSameAlphabetCnt(const string& str1, const string& str2)
+	{
+		bool alphabetExist[26] = { false };
+		for (auto ch : str1)
+		{
+			alphabetExist[ch - 'A'] = true;
+		}
+
+		int cnt = 0;
+		for (auto ch: str2)
+		{
+			if (alphabetExist[ch - 'A'] == false) continue;
+			cnt++;
+			alphabetExist[ch - 'A'] = false;
+		}
+		return cnt;
+	}
+
 	int checkAlphabet(const string& str1, const string& str2)
 	{
-		return 40;
+		int totalCnt = getTotalAlphabetCnt(str1, str2);
+		int sameCnt = getSameAlphabetCnt(str1, str2);
+
+		return ((double)sameCnt/totalCnt)*40;
 	}
 
 	void assertIllegalArgument(const string& str)
 	{
+		//대문자만 고려합니다.
 		for (auto ch : str)
 		{
 			if (ch >= 'A' && ch <= 'Z') continue;

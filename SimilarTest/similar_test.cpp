@@ -54,3 +54,20 @@ TEST_F(SimilarityCheckerFixture, LengthCheck) {
 		EXPECT_EQ(expected, score);
 	}
 }
+
+TEST_F(SimilarityCheckerFixture, AlphabetCheck) {
+	vector < tuple<string, string, int> > cases = {
+		{"ASD", "DSA", 40},
+		{"A", "BB", 0},
+		{"AAABB", "BAA", 40},
+		{"AA", "AAE", 20},
+	};
+	for (auto& item : cases)
+	{
+		string str1, str2;
+		int expected;
+		std::tie(str1, str2, expected) = item;
+		int score = checker.checkAlphabet(str1, str2);
+		EXPECT_EQ(expected, score);
+	}
+}
